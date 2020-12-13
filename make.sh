@@ -3,10 +3,12 @@
 if [ -z $1 ]
 then
 	echo "compiling..."
-	ocamllex analyseur_syntaxique.mll && ocaml analyseur_syntaxique.ml < example.minic
+	ocamllex analyseur_lexical.mll 
+	ocaml analyseur_lexical.ml < example.minic
+	menhir analyseur_lexical.mly
 elif [ "$1" = "clean" ]
 then
-	echo "removing analyseur_syntaxique.ml"
-	rm analyseur_syntaxique.ml
+	echo "make clean..."
+	rm *.ml *.mli *.automaton *.conflicts
 fi
 
