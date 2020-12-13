@@ -9,16 +9,18 @@
         open Lexing
 
         type token =
-                | TYPE of string
                 | EQUAL
                 | WHILE
                 | CST of int
-                | BOOL of bool
+                | BOOLEAN of bool
+                | INT
+                | VOID
+                | BOOL
                 | ADD
                 | RETURN
                 | MINUS
                 | MUL
-                | FUN
+                | COMA
                 | LESSTHAN
                 | LBRACKET
                 | RBRACKET
@@ -48,19 +50,22 @@ let symboles = ( "->" | '+' | '(' | ')' | '=' | '|' )
 
 rule scan_text = parse
         | [' ' '\t']* { scan_text lexbuf }
-        | ("int" |  "void" | "bool" ) as s { TYPE (s) }
+        | "int" { INT }
+        | "void" { VOID }
+        | "bool" { BOOL }
         | "if" { IF }
         | "else" { ELSE }
         | '-'?digit+ as c { CST (int_of_string c) } 
         | '(' { LPAR }
         | '-' { MINUS }
+        | ',' { COMA }
         | "return" { RETURN }
         | ')' { RPAR }
         | '}' { RBRACKET }
         | '{' { LBRACKET }
         | "putchar" { PUTCHAR }
         | '=' { EQUAL }
-        | ("true" | "false") as c { BOOL (bool_of_string c) }
+        | ("true" | "false") as c { BOOLEAN (bool_of_string c) }
         | ';' { SEMI }
         | '+'  { ADD } 
         | '*'  { MUL } 
@@ -80,15 +85,17 @@ rule scan_text = parse
                 | SEMI -> sprintf "SEMI"
                 | PUTCHAR -> sprintf "PUTCHAR"
                 | EQUAL -> sprintf "EQUAL"
+                | COMA -> sprintf "COMA"
                 | WHILE -> sprintf "WHILE"
                 | ADD -> sprintf "PLUS"
                 | RETURN -> sprintf "RETURN"
                 | MINUS -> sprintf "MINUS"
-                | BOOL c -> sprintf "BOOL %b" c
+                | BOOLEAN c -> sprintf "BOOLEAN %b" c
                 | CST c -> sprintf "CST %d" c
                 | MUL -> sprintf "MUL"
-                | TYPE s -> sprintf "TYPE %s" s
-                | FUN -> sprintf "FUN"
+                | BOOL-> sprintf "BOOL"
+                | INT -> sprintf "INT"
+                | VOID -> sprintf "VOID"
                 | IF -> sprintf "IF"
                 | ELSE -> sprintf "ELSE"
                 | IDENT c -> sprintf "IDENT %s" c

@@ -5,7 +5,7 @@ then
 	echo "compiling..."
 	ocamllex analyseur_lexical.mll 
 	ocaml analyseur_lexical.ml < example.minic
-	menhir analyseur_lexical.mly
+	menhir -v analyseur_syntaxique.mly
 elif [ "$1" = "clean" ]
 then
 	echo "make clean..."
