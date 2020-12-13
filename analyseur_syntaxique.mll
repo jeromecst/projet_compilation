@@ -12,9 +12,10 @@
                 | TYPE of string
                 | EQUAL
                 | WHILE
-                | INT of int
+                | CST of int
                 | BOOL of bool
                 | PLUS
+                | MINUS
                 | MUL
                 | FUN
                 | LESSTHAN
@@ -23,6 +24,7 @@
                 | LPAR
                 | RPAR
                 | IF
+                | ELSE
                 | IDENT of string
                 | SEMI
 
@@ -41,16 +43,15 @@ let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
 let ident = alpha (digit | alpha | '_')*
 let symboles = ( "->" | '+' | '(' | ')' | '=' | '|' )
-let spaces = ' '*
-
 
 rule scan_text = parse
         | [' ' '\t']* { scan_text lexbuf }
         | ("int" |  "void" | "bool" ) as s { TYPE (s) }
         | "if" { IF }
-        | '-'?digit+ as c { INT (int_of_string c) } 
-        | ident as c { IDENT (c) }
+        | "else" { ELSE }
+        | '-'?digit+ as c { CST (int_of_string c) } 
         | '(' { LPAR }
+        | '-' { MINUS }
         | ')' { RPAR }
         | '}' { RBRACKET }
         | '{' { LBRACKET }
@@ -60,6 +61,7 @@ rule scan_text = parse
         | '+'  { PLUS } 
         | '*'  { MUL } 
         | '<'  { LESSTHAN } 
+        | ident as c { IDENT (c) }
         | '\n' { Lexing.new_line lexbuf; scan_text lexbuf }
         | _ as c { 
                 let (x, y) = get_lexbuf_position lexbuf in
@@ -75,12 +77,14 @@ rule scan_text = parse
                 | EQUAL -> sprintf "EQUAL"
                 | WHILE -> sprintf "WHILE"
                 | PLUS -> sprintf "PLUS"
+                | MINUS -> sprintf "MINUS"
                 | BOOL c -> sprintf "BOOL %b" c
-                | INT c -> sprintf "INT %d" c
+                | CST c -> sprintf "CST %d" c
                 | MUL -> sprintf "MUL"
                 | TYPE s -> sprintf "TYPE %s" s
                 | FUN -> sprintf "FUN"
                 | IF -> sprintf "IF"
+                | ELSE -> sprintf "ELSE"
                 | IDENT c -> sprintf "IDENT %s" c
                 | LESSTHAN -> sprintf "LESSTHAN"
                 | LPAR -> sprintf "LPAR"

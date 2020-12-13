@@ -1,6 +1,8 @@
-int PARAM = 5;
-int psas=3;
-bool o = PARAM < psas ;
+bool lmf = true;
+int mms = 667;
+
+int x = -2 - -34;
+x = 1;
 
 int fact(int n) {
 	if (n < 2) {
