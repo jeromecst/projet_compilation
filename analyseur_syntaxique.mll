@@ -27,6 +27,7 @@
                 | ELSE
                 | IDENT of string
                 | SEMI
+                | PUTCHAR
 
         exception Eof
 
@@ -55,6 +56,7 @@ rule scan_text = parse
         | ')' { RPAR }
         | '}' { RBRACKET }
         | '{' { LBRACKET }
+        | "putchar" { PUTCHAR }
         | '=' { EQUAL }
         | ("true" | "false") as c { BOOL (bool_of_string c) }
         | ';' { SEMI }
@@ -65,7 +67,7 @@ rule scan_text = parse
         | '\n' { Lexing.new_line lexbuf; scan_text lexbuf }
         | _ as c { 
                 let (x, y) = get_lexbuf_position lexbuf in
-                failwith (sprintf "Caractère non reconnu : '%c', ligne %d, caractère %d" c y x ) }
+                failwith (sprintf "Unknown char : '%c', ligne %d, caractère %d" c y x ) }
         | eof { raise Eof }
 
 (* rule read_ident vartype varname = parse *)
@@ -74,6 +76,7 @@ rule scan_text = parse
 {
         let rec token_to_string = function
                 | SEMI -> sprintf "SEMI"
+                | PUTCHAR -> sprintf "PUTCHAR"
                 | EQUAL -> sprintf "EQUAL"
                 | WHILE -> sprintf "WHILE"
                 | PLUS -> sprintf "PLUS"
