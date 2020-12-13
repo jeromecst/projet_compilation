@@ -14,7 +14,8 @@
                 | WHILE
                 | CST of int
                 | BOOL of bool
-                | PLUS
+                | ADD
+                | RETURN
                 | MINUS
                 | MUL
                 | FUN
@@ -53,6 +54,7 @@ rule scan_text = parse
         | '-'?digit+ as c { CST (int_of_string c) } 
         | '(' { LPAR }
         | '-' { MINUS }
+        | "return" { RETURN }
         | ')' { RPAR }
         | '}' { RBRACKET }
         | '{' { LBRACKET }
@@ -60,7 +62,7 @@ rule scan_text = parse
         | '=' { EQUAL }
         | ("true" | "false") as c { BOOL (bool_of_string c) }
         | ';' { SEMI }
-        | '+'  { PLUS } 
+        | '+'  { ADD } 
         | '*'  { MUL } 
         | '<'  { LESSTHAN } 
         | ident as c { IDENT (c) }
@@ -79,7 +81,8 @@ rule scan_text = parse
                 | PUTCHAR -> sprintf "PUTCHAR"
                 | EQUAL -> sprintf "EQUAL"
                 | WHILE -> sprintf "WHILE"
-                | PLUS -> sprintf "PLUS"
+                | ADD -> sprintf "PLUS"
+                | RETURN -> sprintf "RETURN"
                 | MINUS -> sprintf "MINUS"
                 | BOOL c -> sprintf "BOOL %b" c
                 | CST c -> sprintf "CST %d" c
