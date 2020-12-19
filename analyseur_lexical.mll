@@ -1,9 +1,3 @@
-(*
- Jérôme Coquisart
- utilisation : ocamllex exercice4.mll; ocaml exerice4.ml < textEx4
- résultat : dans la console
- *)
-
 {
         open Printf
         open Lexing
@@ -31,8 +25,9 @@
                 | IDENT of string
                 | SEMI
                 | PUTCHAR
+                | EOF
 
-        exception Eof
+        (* exception Eof *)
 
         let get_lexbuf_position lexbuf = 
                 let p = Lexing.lexeme_start_p lexbuf in
@@ -75,10 +70,8 @@ rule scan_text = parse
         | _ as c { 
                 let (x, y) = get_lexbuf_position lexbuf in
                 failwith (sprintf "Unknown char : '%c', ligne %d, caractère %d" c y x ) }
-        | eof { raise Eof }
+        | eof { EOF }
 
-(* rule read_ident vartype varname = parse *)
-        
 
 {
         let rec token_to_string = function
@@ -104,6 +97,7 @@ rule scan_text = parse
                 | RPAR -> sprintf "RPAR"
                 | LBRACKET -> sprintf "LBRACKET"
                 | RBRACKET -> sprintf "RBRACKET"
+                | EOF -> exit 0
 
         let main () =
                 let cin =
