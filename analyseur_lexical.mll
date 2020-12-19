@@ -27,8 +27,6 @@
                 | PUTCHAR
                 | EOF
 
-        (* exception Eof *)
-
         let get_lexbuf_position lexbuf = 
                 let p = Lexing.lexeme_start_p lexbuf in
                 let x = p.pos_cnum in
@@ -97,7 +95,7 @@ rule scan_text = parse
                 | RPAR -> sprintf "RPAR"
                 | LBRACKET -> sprintf "LBRACKET"
                 | RBRACKET -> sprintf "RBRACKET"
-                | EOF -> exit 0
+                | EOF -> ( sprintf "EOF" ;  exit 0 )
 
         let main () =
                 let cin =
