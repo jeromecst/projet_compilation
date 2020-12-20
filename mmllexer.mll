@@ -3,8 +3,6 @@ open Printf
 open Lexing
 open Mmlparser
 
-exception Eof
-
 let get_lexbuf_position lexbuf = 
         let p = Lexing.lexeme_start_p lexbuf in
         let x = p.pos_cnum in
@@ -44,7 +42,7 @@ rule scan_text = parse
         | _ as c { 
                 let (x, y) = get_lexbuf_position lexbuf in
                 failwith (sprintf "Unknown char : '%c', ligne %d, caractère %d" c y x ) }
-        | eof { raise Eof }
+        | eof { FIN }
 
 
 (*

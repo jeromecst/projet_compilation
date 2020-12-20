@@ -2,42 +2,39 @@
   open Mml
 %}
 
-%token INT
-%token VOID
-%token BOOL
+%token INT VOID BOOL
 %token EQUAL
 %token WHILE
 %token <int> CST 
-%token ADD
-%token COMMA
-%token RETURN
-%token MUL
+%token ADD COMMA RETURN MUL
 %token LESSTHAN
-%token LBRACKET
-%token RBRACKET
-%token LPAR
-%token RPAR
-%token IF
-%token ELSE
+%token LBRACKET RBRACKET
+%token LPAR RPAR
+%token IF ELSE
 %token <string> IDENT 
 %token SEMI
 %token PUTCHAR
+%token FIN
 
-%left MUL
-%left ADD 
-%left LESSTHAN
+%left MUL ADD LESSTHAN
 
 %start prog
-%type <Mml.expr> prog
+%type <Mml.prog> prog
 
 %%
 
 prog: 
-       a=list(variable) b=list(fun_def) { {globals=a; functions=b} }
+        | a=list(variable) b=list(fun_def) FIN { {globals=a; functions=b } }
+        | error
+            { let pos = $startpos in
+              let message = Printf.sprintf
+                "échec à la position %d, %d" (pos.pos_cnum - pos.pos_bol + 1) (pos.pos_lnum)
+              in
+              failwith message }
 ;
 
 variable:
-| t=typ s=IDENT EQUAL expr SEMI { (s, t) }
+        | t=typ s=IDENT EQUAL expr SEMI { (s, t) }
 
 typ:
 	| BOOL { Bool }
@@ -70,7 +67,7 @@ seq:
         | e=list(instr) { e } ;
 
 then_statement:
-        | LBRACKET s=seq RBRACKET    { s } ;
+        | LBRACKET s=seq RBRACKET { s } ;
 
 expr:
         | n  = CST                                          { Cst(n) }

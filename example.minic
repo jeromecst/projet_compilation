@@ -1,7 +1,6 @@
-bool lmf = true;
 int mms = 667;
 
-x = 1;
+int x = 1;
 
 int fact(int n) {
 	if (n < 2) {
