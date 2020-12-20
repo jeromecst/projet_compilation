@@ -37,7 +37,7 @@ prog:
 ;
 
 variable:
-        | t=typ s=IDENT EQUAL expr SEMI { (s, t) }
+| t=typ s=IDENT EQUAL expr SEMI { (s, t) }
 
 typ:
 	| BOOL { Bool }
@@ -46,7 +46,7 @@ typ:
 ;
 
 fun_def:
-	| t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
+	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
 ;
 
 params:
