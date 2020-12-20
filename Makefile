@@ -1,7 +1,7 @@
 all:
-	ocamllex analyseur_lexical.mll 
-	ocaml analyseur_lexical.ml < example.minic
-	menhir -v analyseur_syntaxique.mly
+	ocamllex mmllexer.mll
+	menhir -v mmlparser.mly
+	ocamlc mml.ml mmlparser.mli mmlparser.ml mmllexer.ml mmlc.ml
 
 clean:
-	rm *.ml *.mli *.automaton *.conflicts *.cmi *.cmo -f
+	rm mmllexer.ml mmlparser.ml *.mli *.automaton *.conflicts *.cmi *.cmo a.out -f 

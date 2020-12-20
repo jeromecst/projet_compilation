@@ -1,38 +1,16 @@
 {
-        open Printf
-        open Lexing
+open Printf
+open Lexing
+open Mmlparser
 
-        type token =
-                | EQUAL
-                | WHILE
-                | CST of int
-                | BOOLEAN of bool
-                | INT
-                | VOID
-                | BOOL
-                | ADD
-                | RETURN
-                | MINUS
-                | MUL
-                | COMA
-                | LESSTHAN
-                | LBRACKET
-                | RBRACKET
-                | LPAR
-                | RPAR
-                | IF
-                | ELSE
-                | IDENT of string
-                | SEMI
-                | PUTCHAR
-                | EOF
+exception Eof
 
-        let get_lexbuf_position lexbuf = 
-                let p = Lexing.lexeme_start_p lexbuf in
-                let x = p.pos_cnum in
-                let y = p.pos_lnum in
-                let z = p.pos_bol in
-                ((x-z + 1), y)
+let get_lexbuf_position lexbuf = 
+        let p = Lexing.lexeme_start_p lexbuf in
+        let x = p.pos_cnum in
+        let y = p.pos_lnum in
+        let z = p.pos_bol in
+        ((x-z + 1), y)
 
 }
 
@@ -43,6 +21,7 @@ let symboles = ( "->" | '+' | '(' | ')' | '=' | '|' )
 
 rule scan_text = parse
         | [' ' '\t']* { scan_text lexbuf }
+        | '\n' { Lexing.new_line lexbuf; scan_text lexbuf }
         | "int" { INT }
         | "void" { VOID }
         | "bool" { BOOL }
@@ -50,27 +29,25 @@ rule scan_text = parse
         | "else" { ELSE }
         | '-'?digit+ as c { CST (int_of_string c) } 
         | '(' { LPAR }
-        | '-' { MINUS }
-        | ',' { COMA }
+        | ',' { COMMA }
         | "return" { RETURN }
         | ')' { RPAR }
         | '}' { RBRACKET }
         | '{' { LBRACKET }
         | "putchar" { PUTCHAR }
         | '=' { EQUAL }
-        | ("true" | "false") as c { BOOLEAN (bool_of_string c) }
         | ';' { SEMI }
         | '+'  { ADD } 
         | '*'  { MUL } 
         | '<'  { LESSTHAN } 
         | ident as c { IDENT (c) }
-        | '\n' { Lexing.new_line lexbuf; scan_text lexbuf }
         | _ as c { 
                 let (x, y) = get_lexbuf_position lexbuf in
                 failwith (sprintf "Unknown char : '%c', ligne %d, caractère %d" c y x ) }
-        | eof { EOF }
+        | eof { raise Eof }
 
 
+(*
 {
         let rec token_to_string = function
                 | SEMI -> sprintf "SEMI"
@@ -80,8 +57,6 @@ rule scan_text = parse
                 | WHILE -> sprintf "WHILE"
                 | ADD -> sprintf "PLUS"
                 | RETURN -> sprintf "RETURN"
-                | MINUS -> sprintf "MINUS"
-                | BOOLEAN c -> sprintf "BOOLEAN %b" c
                 | CST c -> sprintf "CST %d" c
                 | MUL -> sprintf "MUL"
                 | BOOL-> sprintf "BOOL"
@@ -114,3 +89,4 @@ rule scan_text = parse
 
         let _ = main ();
 }
+*)
