@@ -1,0 +1,9 @@
+int a(){
+	return 2;
+}
+
+void main(){
+	int b = a();
+	// erreur sous cette ligne car a() de type int
+	bool c = a();
+}

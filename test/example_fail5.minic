@@ -1,0 +1,9 @@
+int a( int a, int b, int c){
+	return a + b + c;
+}
+
+void main(){
+	int x = a(3, 6, -3);
+	// erreur de typage sous cette ligne car il manque un paramètre
+	int z = a(3, 6);
+}
