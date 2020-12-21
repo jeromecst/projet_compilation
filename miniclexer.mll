@@ -23,6 +23,7 @@ rule scan_text = parse
         | "int" { INT }
         | "void" { VOID }
         | "bool" { BOOL }
+        | "while" { WHILE }
         | "if" { IF }
         | "else" { ELSE }
         | '-'?digit+ as c { CST (int_of_string c) } 

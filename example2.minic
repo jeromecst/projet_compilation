@@ -1,1 +1,8 @@
-int mms = 667;
+void main(){
+	int id = 0;
+	while ( id < 255 ){
+		id = id + 1;
+		putchar(id);
+	}
+	return 0;
+}

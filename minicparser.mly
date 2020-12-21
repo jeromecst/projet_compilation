@@ -1,5 +1,11 @@
 %{
-  open Minic
+        open Minic
+
+        let var_list = Hashtbl.create 0;;
+        let addGloVar name exp =
+                Hashtbl.add var_list name exp
+        ;;
+
 %}
 
 %token INT VOID BOOL
@@ -37,7 +43,7 @@ globals:
 
 
 variable:
-        | t=typ s=IDENT EQUAL expr SEMI { Printf.printf "%s\n" s ; (s, t) } ;
+        | t=typ s=IDENT EQUAL e=expr SEMI { addGloVar s e ; (s, t) } ;
 
 fun_def:
 	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } } ;
