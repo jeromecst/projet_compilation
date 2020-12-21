@@ -1,0 +1,12 @@
+int a = 3;
+
+void main(){
+	int b = 3;
+	int c = b + a;
+	if ( c < b ) {
+		putchar(c);
+	}
+	else{
+	putchar(b);
+	}
+}

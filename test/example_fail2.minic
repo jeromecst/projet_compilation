@@ -1,4 +1,4 @@
-bool truee;
+int xyz = 2;
 
 int a(){
 	return 2;
@@ -9,8 +9,11 @@ int b(){
 
 void main(){
 	int id = 0;
+	bool a = 0;
 	while ( id < 255 ){
+		// erreur sous cette ligne
 		id = id + 1;
+		id = a;
 		putchar(id);
 	}
 }

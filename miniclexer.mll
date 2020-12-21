@@ -19,6 +19,7 @@ let symboles = ( "->" | '+' | '(' | ')' | '=' | '|' )
 rule scan_text = parse
         | [' ' '\t']*     { scan_text lexbuf }
         | '\n'            { Lexing.new_line lexbuf; scan_text lexbuf }
+        | "//"[^'\n']*    { scan_text lexbuf }
         | "int"           { INT }
         | "void"          { VOID }
         | "bool"          { BOOL }

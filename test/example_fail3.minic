@@ -1,0 +1,10 @@
+
+void function(){
+	int a = 3;
+}
+
+void main(){
+	function();
+	// erreur sous cette ligne car a n'est pas déclarée au bon endroit !
+	putchar(a);
+}

@@ -23,13 +23,22 @@ let addFun funs =
         let env = Hashtbl.create 20 in
         addFun funs env ;;
 
+let addParams table p =
+        match p with
+        | [] -> ()
+        | hd::tl ->
+                        let (s, t) = hd in
+                        Hashtbl.add table s t
+
 let addLocVar funs = 
         let rec addLocVar funs env = 
                 match funs with 
                 | [] -> env
                 | hd::tl ->     let s = hd.name in
                                 let l = hd.locals in
+                                let p = hd.params in
                                 let envloc = addVar l in
+                                addParams envloc p;
                                 Hashtbl.add env s envloc;
                                 addLocVar tl env
         in
