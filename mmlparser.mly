@@ -33,7 +33,7 @@ prog:
 
 globals:
 	| g1 = globals g2 = variable { List.append g1 [g2] }
-	|                          { [] } ;
+	|                            { [] } ;
 
 
 variable:
@@ -52,7 +52,7 @@ params:
 ;
 
 instr:
-        | PUTCHAR LPAR e=expr RPAR SEMI                     { Putchar(e)}
+        | PUTCHAR LPAR e=expr RPAR SEMI           { Putchar(e)}
 	| s=IDENT EQUAL e=expr SEMI               { Set(s, e) }
         | i=if_statement                          { i }
         | WHILE LPAR e=expr RPAR s=then_statement { While(e, s) }
