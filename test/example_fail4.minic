@@ -2,8 +2,12 @@ int a(){
 	return 2;
 }
 
+void b(int p){
+	int x = 5+3+p+1+-1;
+}
+
 void main(){
 	int b = a();
-	// erreur sous cette ligne car a() de type int
-	bool c = a();
+	// erreur sous cette ligne car b() est de type void mais c est une variable de type bool
+	bool c = b(a());
 }

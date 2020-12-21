@@ -60,14 +60,14 @@ let rec type_instr i envs =
         | Set(x,e) -> 
                         let te = type_expr e envs in
                         let tx = search_tables envs x in
-                        if tx = te then Void else failwith "type error set"
+                        if (tx = te) || (tx = Bool && te = Int) then Void else failwith "type error set"
         | If(e,s1,s2)->
                         let te = type_expr e envs in
                         if te = Bool then 
                                ( if ((type_seq s1 envs = Void) && (type_seq s2 envs = Void)) then Void else failwith "type error if" )
                                 else failwith "type error if" 
         |While(e,s)-> let te = type_expr e envs in
-                      if te = Bool then
+                      if (te = Bool || te = Int)  then
                               if type_seq s envs = Void then Void else failwith "type error while"
                               else failwith "type error while"
         | Return(e) ->  let te = type_expr e envs in
@@ -89,7 +89,7 @@ let rec type_variables l envs =
         | hd::tl -> 
                         let (s, t, e) = hd in
                         let te = type_expr e envs in
-                        if te = t then type_variables tl envs  else failwith "type error var"
+                        if (te = t) || (t = Bool && te = Int) then type_variables tl envs  else failwith "type error var"
 
 let rec type_fun_def f envs =
         let locals = f.locals in

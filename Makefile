@@ -7,6 +7,7 @@ test:	all
 	./a.out test/example.minic
 	./a.out test/example2.minic
 	./a.out test/example3.minic
+	./a.out test/example4.minic
 
 fail : all
 	#./a.out test/example_fail.minic

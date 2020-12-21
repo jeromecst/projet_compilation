@@ -16,8 +16,9 @@
 	* un fichier **minictyp.ml** contenant l'analyseur de types
 	* un dossier **test/** contenant les différents tests
 	
-* Pour la **déclaration des variables**, on a étendu le type des déclarations de variables dans la syntaxe abstraite à `(string * typ * expr) list`.
-* Deux fonctions ne peuvent pas avoir le même nom, sinon cela déclenche une erreur (choix personnel).
+* Choix personnels :
+	* Pour la **déclaration des variables**, on a étendu le type des déclarations de variables dans la syntaxe abstraite à `(string * typ * expr) list`.
+	* Deux fonctions ne peuvent pas avoir le même nom, sinon cela déclenche une erreur (choix personnel).
 
 * Un **Makefile** a été créé, on peut y trouver :
 	* Les lignes de compilation avec `make`
@@ -46,4 +47,5 @@
 	* s'il y a une erreur de type, un message d'erreur s'affiche avec le type impliqué dans l'erreur
 	* on analyse toutes les expressions possibles, notamment les paramètres d'entrées des fonctions, les returns etc...
 	* par défaut, on fait le choix que les instructions soient toutes de type `Void`, de même pour les listes de variables, les listes de fonction etc...
-
+	* les `bool` acceptent les `int` mais les `int` n'acceptent pas les `bool`
+	* en effet, `false` correspond à 0 et `true` correspond à tous les autres nombres

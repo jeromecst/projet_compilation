@@ -9,6 +9,7 @@ open Minic
 %token ADD COMMA RETURN MUL SEMI FIN
 %token LESSTHAN
 %token LBRACKET RBRACKET
+%token <bool> BOOLEAN
 %token LPAR RPAR
 %token IF ELSE
 %token <string> IDENT 
@@ -69,6 +70,7 @@ then_statement:
 
 expr:
         | n  = CST                                          { Cst(n) }
+        | b = BOOLEAN                                       { if b = true then Cst(1) else Cst(0) }
         | e1 = expr ADD e2=expr                             { Add(e1, e2) }
         | e1 = expr MUL e2=expr                             { Mul(e1, e2) }
         | e1 = expr LESSTHAN e2=expr                        { Lt(e1, e2) }
