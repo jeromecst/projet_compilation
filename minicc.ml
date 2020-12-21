@@ -33,7 +33,7 @@ let addFun funs =
         addFun funs env ;;
 
 (*
- * Ajoute les paramètres d'une fonctions comme variables locales
+ * Ajoute les paramètres d'une fonction comme variables locales
  *)
 let rec addParams table p =
         match p with
@@ -44,7 +44,7 @@ let rec addParams table p =
                         addParams table tl
 
 (*
-* Ajoute les variables locale d'une fonction dans une nouvelle table de hachage
+* Ajoute les variables locales d'une fonction dans une nouvelle table de hachage
 *)
 let addLocVar funs = 
         let rec addLocVar funs env = 
