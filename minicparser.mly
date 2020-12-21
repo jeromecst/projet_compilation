@@ -1,10 +1,5 @@
 %{
 open Minic
-
-let var_list = Hashtbl.create 0;;
-let addGloVar name exp =
-        Hashtbl.add var_list name exp
-;;
 %}
 
 %token INT VOID BOOL
