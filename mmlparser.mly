@@ -22,55 +22,30 @@
 %type <Mml.prog> prog
 
 %%
-(*
-
-
 prog:
-          |glb = globals fcts = functions MAIN ACCO_O p=seq ACCO_F EOF { {globals = glb; functions = fcts} }
-          ;
-          functions:
-                    |f = list(fun_def) {f}
-                    ;
-                    globals:
-                              | g1 = globals g2 = global {  addVarGl(id,t,0); List.append g1 [g2] }
-                                | {[]}
-                                ;
-                                fun_def:
-                                         |ret = typ id = IDENT PAR_O param = list(param) PAR_F ACCO_O loc = locals s = seq ACCO_F 
-                                             { let fct = {name = id; params = param; return = ret; locals = loc; code = s} in fct}
-                                             et ça ne pose pas de probleme
-
-*)
-
-prog: 
-        | t=typ s=INDENT typid_next { {globals=[]; functions=b } }
-        | error
+	| a = globals b = list(fun_def) FIN { {globals = a; functions = b} }
+	| error
             { let pos = $startpos in
               let message = Printf.sprintf
                 "échec à la position %d, %d" (pos.pos_cnum - pos.pos_bol + 1) (pos.pos_lnum)
               in
-              failwith message }
-;
+              failwith message } ;
 
-typid_next:
-        | EQUAL expr {}
-	| LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
-;
+globals:
+	| g1 = globals g2 = variable { List.append g1 [g2] }
+	|                          { [] } ;
+
 
 variable:
-        | t=typ s=IDENT EQUAL expr { (s, t) }
-        ;
+        | t=typ s=IDENT EQUAL expr { (s, t) } ;
 
 fun_def:
-	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
-;
+	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } } ;
 
 typ:
 	| BOOL { Bool }
 	| INT  { Int }
-	| VOID { Void }
-;
-
+	| VOID { Void } ;
 
 params:
         | t=typ s=IDENT { (s,t) }
