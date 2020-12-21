@@ -7,6 +7,6 @@ void main(){
 		putchar(c);
 	}
 	else{
-	putchar(b);
+		putchar(b);
 	}
 }

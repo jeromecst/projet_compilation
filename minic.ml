@@ -1,3 +1,7 @@
+(*
+ * Syntaxe abstraite du langage Mini-c
+ *)
+
 type typ =
         | Int
         | Bool

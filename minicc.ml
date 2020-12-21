@@ -1,5 +1,8 @@
 open Minic
 
+(*
+ * Ajoute les variables globales dans une table de hachage
+ *)
 let addVar vars =
         let rec addVar vars env = 
                 match vars with 
@@ -12,24 +15,37 @@ let addVar vars =
         addVar vars env ;;
 
 
+(*
+ * Ajoute chaque fonction dans une table de hachage
+ *)
 let addFun funs =
         let rec addFun funs env = 
                 match funs with 
                 | [] -> env
                 | hd::tl ->     let s = hd.name in
+                                if Hashtbl.mem env s 
+                                then failwith "erreur, 2 fonctions on le même nom" 
+                                else
                                 Hashtbl.add env s hd;
                                 addFun tl env
         in
         let env = Hashtbl.create 20 in
         addFun funs env ;;
 
-let addParams table p =
+(*
+ * Ajoute les paramètres d'une fonctions comme variables locales
+ *)
+let rec addParams table p =
         match p with
         | [] -> ()
         | hd::tl ->
                         let (s, t) = hd in
-                        Hashtbl.add table s t
+                        Hashtbl.add table s t;
+                        addParams table tl
 
+(*
+* Ajoute les variables locale d'une fonction dans une nouvelle table de hachage
+*)
 let addLocVar funs = 
         let rec addLocVar funs env = 
                 match funs with 

@@ -11,8 +11,8 @@ void main(){
 	int id = 0;
 	bool a = 0;
 	while ( id < 255 ){
-		// erreur sous cette ligne
 		id = id + 1;
+		// erreur sous cette ligne car a est de type bool
 		id = a;
 		putchar(id);
 	}
