@@ -1,7 +1,7 @@
 {
 open Printf
 open Lexing
-open Mmlparser
+open Minicparser
 
 let get_lexbuf_position lexbuf = 
         let p = Lexing.lexeme_start_p lexbuf in

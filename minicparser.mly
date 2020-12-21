@@ -1,5 +1,5 @@
 %{
-  open Mml
+  open Minic
 %}
 
 %token INT VOID BOOL
@@ -19,7 +19,7 @@
 %left MUL ADD LESSTHAN
 
 %start prog
-%type <Mml.prog> prog
+%type <Minic.prog> prog
 
 %%
 prog:
@@ -32,7 +32,7 @@ prog:
               failwith message } ;
 
 globals:
-	| g1 = globals g2 = variable { List.append g1 [g2] }
+	| g = globals v = variable { List.append g [v] }
 	|                            { [] } ;
 
 

@@ -1,7 +1,7 @@
 all:
-	ocamllex mmllexer.mll
-	menhir -v mmlparser.mly
-	ocamlc mml.ml mmlparser.mli mmlparser.ml mmllexer.ml mmlc.ml
+	ocamllex miniclexer.mll
+	menhir -v minicparser.mly
+	ocamlc minic.ml minicparser.mli minicparser.ml miniclexer.ml minicc.ml
 
 clean:
-	rm mmllexer.ml mmlparser.ml *.mli *.automaton *.conflicts *.cmi *.cmo a.out -f 
+	rm miniclexer.ml minicparser.ml *.mli *.automaton *.conflicts *.cmi *.cmo a.out -f 
