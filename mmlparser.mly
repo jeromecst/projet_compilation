@@ -27,7 +27,7 @@ prog:
 	| error
             { let pos = $startpos in
               let message = Printf.sprintf
-                "échec à la position %d, %d" (pos.pos_cnum - pos.pos_bol + 1) (pos.pos_lnum)
+                "échec à la position %d, %d" (pos.pos_lnum) (pos.pos_cnum - pos.pos_bol + 1)
               in
               failwith message } ;
 
@@ -37,7 +37,7 @@ globals:
 
 
 variable:
-        | t=typ s=IDENT EQUAL expr { (s, t) } ;
+        | t=typ s=IDENT EQUAL expr SEMI { (s, t) } ;
 
 fun_def:
 	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } } ;
@@ -52,7 +52,7 @@ params:
 ;
 
 instr:
-        | PUTCHAR e=expr SEMI                     { Putchar(e)}
+        | PUTCHAR LPAR e=expr RPAR SEMI                     { Putchar(e)}
 	| s=IDENT EQUAL e=expr SEMI               { Set(s, e) }
         | i=if_statement                          { i }
         | WHILE LPAR e=expr RPAR s=then_statement { While(e, s) }
