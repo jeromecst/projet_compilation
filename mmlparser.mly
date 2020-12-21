@@ -22,9 +22,28 @@
 %type <Mml.prog> prog
 
 %%
+(*
+
+
+prog:
+          |glb = globals fcts = functions MAIN ACCO_O p=seq ACCO_F EOF { {globals = glb; functions = fcts} }
+          ;
+          functions:
+                    |f = list(fun_def) {f}
+                    ;
+                    globals:
+                              | g1 = globals g2 = global {  addVarGl(id,t,0); List.append g1 [g2] }
+                                | {[]}
+                                ;
+                                fun_def:
+                                         |ret = typ id = IDENT PAR_O param = list(param) PAR_F ACCO_O loc = locals s = seq ACCO_F 
+                                             { let fct = {name = id; params = param; return = ret; locals = loc; code = s} in fct}
+                                             et ça ne pose pas de probleme
+
+*)
 
 prog: 
-        | a=list(variable) b=list(fun_def) FIN { {globals=a; functions=b } }
+        | t=typ s=INDENT typid_next { {globals=[]; functions=b } }
         | error
             { let pos = $startpos in
               let message = Printf.sprintf
@@ -33,8 +52,18 @@ prog:
               failwith message }
 ;
 
+typid_next:
+        | EQUAL expr {}
+	| LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
+;
+
 variable:
-        | t=typ s=IDENT EQUAL expr SEMI { (s, t) }
+        | t=typ s=IDENT EQUAL expr { (s, t) }
+        ;
+
+fun_def:
+	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
+;
 
 typ:
 	| BOOL { Bool }
@@ -42,9 +71,6 @@ typ:
 	| VOID { Void }
 ;
 
-fun_def:
-	|  t=typ s=IDENT LPAR p=separated_list(COMMA, params ) RPAR LBRACKET l=list(variable) sq=seq RBRACKET { {name=s; params=p; return=t; locals=l; code=sq } }
-;
 
 params:
         | t=typ s=IDENT { (s,t) }
